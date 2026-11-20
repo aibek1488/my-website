@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APEX SERVICE — Автосервис</title>
+  <style>
+    :root {
+      --bg: #f4f8fc;
+      --bg-alt: #e8f1fa;
+      --card-bg: #ffffff;
+      --text: #0f233c;
+      --muted: #4b6584;
+      --border: #cfe0f2;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --sky: #38bdf8;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(244, 248, 252, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .header-inner {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover {
+      color: var(--primary);
+    }
+
+    .lang-switch {
+      display: flex;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 88px 0 76px;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 55%, #dbeafe 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .hero-extra {
+      font-size: 0.96rem;
+      color: var(--text);
+      margin-bottom: 30px;
+      padding-left: 14px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-ghost {
+      border-color: var(--border);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Sections */
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-alt {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+
+    .section-head h2 {
+      font-size: 1.85rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    /* About / Advantages */
+    .grid-advantages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .adv-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .adv-box h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+      color: var(--primary-hover);
+    }
+
+    .adv-box p {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    /* Services Grid */
+    .grid-services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--sky);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(2, 132, 199, 0.08);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 185px;
+      object-fit: cover;
+      display: block;
+      background: #dbeafe;
+    }
+
+    .card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+
+    .card-num {
+      font-size: 0.78rem;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--primary-hover);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Calculator */
+    .calc-box {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    .checks {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .check-item input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+    }
+
+    .calc-result {
+      background: linear-gradient(160deg, #e0f2fe 0%, #eff6ff 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .result-sum {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 6px 0 10px;
+    }
+
+    .result-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Booking */
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .book-desc {
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    .book-list {
+      margin-top: 18px;
+      padding-left: 18px;
+      color: var(--text);
+      font-size: 0.94rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field select {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #f8fbff;
+      color: var(--text);
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    .form-msg {
+      font-size: 0.9rem;
+      color: #0369a1;
+      font-weight: 600;
+      min-height: 20px;
+    }
+
+    /* Footer */
+    .footer {
+      background: #e1eefb;
+      border-top: 1px solid var(--border);
+      padding: 44px 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-copy {
+      margin-top: 8px;
+      max-width: 420px;
+    }
+
+    .footer-info {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+      }
+      .calc-box,
+      .booking-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-info {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">APEX<span>.</span></a>
+
+      <nav class="nav">
+        <a href="#about" data-i18n="nav_about">О сервисе</a>
+        <a href="#services" data-i18n="nav_services">Услуги</a>
+        <a href="#calculator" data-i18n="nav_calc">Расчет</a>
+        <a href="#booking" data-i18n="nav_booking">Запись</a>
+        <a href="#contacts" data-i18n="nav_contacts">Контакты</a>
+      </nav>
+
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <button class="lang-btn active" data-lang="ru">RU</button>
+        <button class="lang-btn" data-lang="kz">KZ</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Главный экран -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow" data-i18n="hero_eyebrow">Точный сервис без лишних слов</p>
+        <h1 data-i18n="hero_title">Комплексное обслуживание и ремонт автомобилей с честным расчетом</h1>
+        <p class="hero-sub" data-i18n="hero_sub">
+          Работаем с легковыми автомобилями, кроссоверами и внедорожниками. Выполняем компьютерную диагностику, плановое ТО, восстановление ходовой части, ремонт тормозной системы и автоэлектрики.
+        </p>
+        <p class="hero-extra" data-i18n="hero_extra">
+          Никаких скрытых наценок в конце ремонта: мастер предварительно согласует каждый этап, покажет изношенные детали и выдаст письменную гарантию до 12 месяцев.
+        </p>
+        <div class="hero-actions">
+          <a href="#booking" class="btn btn-primary" data-i18n="hero_cta">Записаться на сервис</a>
+          <a href="#services" class="btn btn-ghost" data-i18n="hero_more">Смотреть услуги и цены</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- О сервисе -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="about_title">Почему клиенты выбирают APEX Service</h2>
+          <p data-i18n="about_sub">
+            Мы выстроили понятный процесс работы: от первичной проверки на подъемнике и сканере до финального тест-драйва и выдачи заказ-наряда. Вы точно знаете, за что платите и сколько времени займут работы.
+          </p>
+        </div>
+
+        <div class="grid-advantages">
+          <div class="adv-box">
+            <h3 data-i18n="adv_1_title">Диагностика до ремонта</h3>
+            <p data-i18n="adv_1_desc">Сначала находим реальную причину неисправности, а не меняем детали наугад. Согласуем список работ и сумму по телефону или в ремзоне.</p>
+          </div>
+          <div class="adv-box">
+            <h3 data-i18n="adv_2_title">Проверенные запчасти</h3>
+            <p data-i18n="adv_2_desc">Подбираем оригинальные комплектующие и надежные аналоги с понятным ресурсом под ваш стиль езды и бюджет.</p>
+          </div>
+          <div class="adv-box">
+            <h3 data-i18n="adv_3_title">Гарантия до 12 месяцев</h3>
+            <p data-i18n="adv_3_desc">Оформляем документы на выполненные работы и установленные узлы, чтобы вы были уверены в машине на трассе и в городе.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="services_title">Основные услуги и прайс</h2>
+          <p data-i18n="services_sub">
+            Актуальные базовые цены на популярные работы. Итоговая стоимость зависит от марки, объема двигателя и состояния узлов.
+          </p>
+        </div>
+
+        <div class="grid-services">
+          <article class="card">
+            <img
+              class="card-img"
+              src="https://mustang-f7.kz/wp-content/uploads/2019/08/66386161_350831365806562_5435252166187546704_n-1080x780.jpg"
+              alt="Замена масла и колес в автосервисе"
+            />
+            <div class="card-body">
+              <div>
+                <span class="card-num">01</span>
+                <h3 data-i18n="srv_1_title">Плановое ТО и замена масла</h3>
+                <p data-i18n="srv_1_desc">Замена моторного масла, масляного, воздушного и салонного фильтров, осмотр тормозов, ремней, уровней технических жидкостей и сброс сервисного интервала.</p>
+              </div>
+              <div class="price" data-i18n="srv_1_price">от 22 000 ₸</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card-img"
+              src="https://auto-services.kz/uploads/posts/2021-06/thumbs/1623753735_comp.jpg"
+              alt="Компьютерная диагностика двигателя"
+            />
+            <div class="card-body">
+              <div>
+                <span class="card-num">02</span>
+                <h3 data-i18n="srv_2_title">Компьютерная диагностика</h3>
+                <p data-i18n="srv_2_desc">Полное сканирование электронных блоков, чтение и расшифровка кодов ошибок, проверка параметров работы двигателя, АКПП, ABS и датчиков в реальном времени.</p>
+              </div>
+              <div class="price" data-i18n="srv_2_price">от 18 000 ₸</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              class="card-img"
+              src="https://cdn2.mygazeta.com/i/2015/04/remonthodovoi.jpg"
+              alt="Ремонт ходовой части на подъемнике"
+            />
+            <div class="card-body">
+              <div>
+                <span class="card-num">03</span>
+                <h3 data-i18n="srv_3_title">Ремонт ходовой части и тормозов</h3>
+                <p data-i18n="srv_3_desc">Дефектовка подвески на подъемнике, замена амортизаторов, рычагов, шаровых опор, сайлентблоков, ступичных подшипников, тормозных колодок и дисков.</p>
+              </div>
+              <div class="price" data-i18n="srv_3_price">от 35 000 ₸</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Простой калькулятор стоимости -->
+    <section id="calculator" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="calc_title">Предварительный калькулятор стоимости</h2>
+          <p data-i18n="calc_sub">
+            Выберите класс автомобиля и отметьте нужные услуги, чтобы сразу прикинуть ориентировочный бюджет ремонта.
+          </p>
+        </div>
+
+        <div class="calc-box">
+          <div class="calc-controls">
+            <label class="field">
+              <span data-i18n="calc_car_type">Тип автомобиля</span>
+              <select id="carType">
+                <option value="1" data-i18n="car_sedan">Седан / Хэтчбек</option>
+                <option value="1.25" data-i18n="car_suv">Кроссовер / Внедорожник (+25%)</option>
+              </select>
+            </label>
+
+            <div class="checks">
+              <label class="check-item">
+                <input type="checkbox" class="srv-check" value="22000" checked />
+                <span data-i18n="chk_oil">Плановое ТО и замена масла (22 000 ₸)</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" class="srv-check" value="18000" />
+                <span data-i18n="chk_diag">Компьютерная диагностика (18 000 ₸)</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" class="srv-check" value="35000" />
+                <span data-i18n="chk_chassis">Ремонт ходовой части и тормозов (35 000 ₸)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="calc-result">
+            <span class="result-label" data-i18n="calc_total_label">Примерная стоимость работ:</span>
+            <div class="result-sum" id="totalPrice">22 000 ₸</div>
+            <p class="result-note" data-i18n="calc_note">Ориентировочный расчет за работы без учета стоимости запчастей и расходников.</p>
+            <a href="#booking" class="btn btn-primary" data-i18n="calc_book_btn">Записаться с этим расчетом</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Форма записи -->
+    <section id="booking" class="section section-alt">
+      <div class="container booking-grid">
+        <div>
+          <h2 data-i18n="book_title">Онлайн-запись на сервис</h2>
+          <p class="book-desc" data-i18n="book_sub">
+            Заполните короткую форму — приемщик свяжется с вами в течение 15 минут, уточнит симптомы или список работ и закрепит удобное окно в графике.
+          </p>
+          <ul class="book-list">
+            <li data-i18n="book_li_1">Подбор времени без очередей в бокс</li>
+            <li data-i18n="book_li_2">Предварительная оценка сроков и стоимости</li>
+            <li data-i18n="book_li_3">Консультация по расходникам перед приездом</li>
+          </ul>
+        </div>
+
+        <form id="bookingForm" class="form">
+          <label class="field">
+            <span data-i18n="form_name">Ваше имя</span>
+            <input type="text" id="clientName" required data-i18n-placeholder="ph_name" placeholder="Например, Алексей" />
+          </label>
+
+          <label class="field">
+            <span data-i18n="form_phone">Телефон</span>
+            <input type="tel" id="clientPhone" required data-i18n-placeholder="ph_phone" placeholder="+7 (700) 000-00-00" />
+          </label>
+
+          <label class="field">
+            <span data-i18n="form_car">Марка, модель и год авто</span>
+            <input type="text" id="clientCar" required data-i18n-placeholder="ph_car" placeholder="Toyota Camry 70, 2020" />
+          </label>
+
+          <button type="submit" class="btn btn-primary" data-i18n="form_submit">Отправить заявку</button>
+          <p id="formMessage" class="form-msg" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacts" class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="logo">APEX<span>.</span></div>
+        <p class="footer-copy" data-i18n="footer_rights">
+          © 2026 APEX Service. Профессиональное обслуживание и ремонт автомобилей. Все права защищены.
+        </p>
+      </div>
+      <div class="footer-info">
+        <p data-i18n="footer_address">г. Уральск, ул. Промышленная, 14</p>
+        <p data-i18n="footer_hours">Ежедневно без выходных: 09:00 – 20:00</p>
+        <p>+7 (777) 123-45-67</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      ru: {
+        nav_about: "О сервисе",
+        nav_services: "Услуги",
+        nav_calc: "Расчет",
+        nav_booking: "Запись",
+        nav_contacts: "Контакты",
+        hero_eyebrow: "Точный сервис без лишних слов",
+        hero_title: "Комплексное обслуживание и ремонт автомобилей с честным расчетом",
+        hero_sub: "Работаем с легковыми автомобилями, кроссоверами и внедорожниками. Выполняем компьютерную диагностику, плановое ТО, восстановление ходовой части, ремонт тормозной системы и автоэлектрики.",
+        hero_extra: "Никаких скрытых наценок в конце ремонта: мастер предварительно согласует каждый этап, покажет изношенные детали и выдаст письменную гарантию до 12 месяцев.",
+        hero_cta: "Записаться на сервис",
+        hero_more: "Смотреть услуги и цены",
+        about_title: "Почему клиенты выбирают APEX Service",
+        about_sub: "Мы выстроили понятный процесс работы: от первичной проверки на подъемнике и сканере до финального тест-драйва и выдачи заказ-наряда. Вы точно знаете, за что платите и сколько времени займут работы.",
+        adv_1_title: "Диагностика до ремонта",
+        adv_1_desc: "Сначала находим реальную причину неисправности, а не меняем детали наугад. Согласуем список работ и сумму по телефону или в ремзоне.",
+        adv_2_title: "Проверенные запчасти",
+        adv_2_desc: "Подбираем оригинальные комплектующие и надежные аналоги с понятным ресурсом под ваш стиль езды и бюджет.",
+        adv_3_title: "Гарантия до 12 месяцев",
+        adv_3_desc: "Оформляем документы на выполненные работы и установленные узлы, чтобы вы были уверены в машине на трассе и в городе.",
+        services_title: "Основные услуги и прайс",
+        services_sub: "Актуальные базовые цены на популярные работы. Итоговая стоимость зависит от марки, объема двигателя и состояния узлов.",
+        srv_1_title: "Плановое ТО и замена масла",
+        srv_1_desc: "Замена моторного масла, масляного, воздушного и салонного фильтров, осмотр тормозов, ремней, уровней технических жидкостей и сброс сервисного интервала.",
+        srv_1_price: "от 22 000 ₸",
+        srv_2_title: "Компьютерная диагностика",
+        srv_2_desc: "Полное сканирование электронных блоков, чтение и расшифровка кодов ошибок, проверка параметров работы двигателя, АКПП, ABS и датчиков в реальном времени.",
+        srv_2_price: "от 18 000 ₸",
+        srv_3_title: "Ремонт ходовой части и тормозов",
+        srv_3_desc: "Дефектовка подвески на подъемнике, замена амортизаторов, рычагов, шаровых опор, сайлентблоков, ступичных подшипников, тормозных колодок и дисков.",
+        srv_3_price: "от 35 000 ₸",
+        calc_title: "Предварительный калькулятор стоимости",
+        calc_sub: "Выберите класс автомобиля и отметьте нужные услуги, чтобы сразу прикинуть ориентировочный бюджет ремонта.",
+        calc_car_type: "Тип автомобиля",
+        car_sedan: "Седан / Хэтчбек",
+        car_suv: "Кроссовер / Внедорожник (+25%)",
+        chk_oil: "Плановое ТО и замена масла (22 000 ₸)",
+        chk_diag: "Компьютерная диагностика (18 000 ₸)",
+        chk_chassis: "Ремонт ходовой части и тормозов (35 000 ₸)",
+        calc_total_label: "Примерная стоимость работ:",
+        calc_note: "Ориентировочный расчет за работы без учета стоимости запчастей и расходников.",
+        calc_book_btn: "Записаться с этим расчетом",
+        book_title: "Онлайн-запись на сервис",
+        book_sub: "Заполните короткую форму — приемщик свяжется с вами в течение 15 минут, уточнит симптомы или список работ и закрепит удобное окно в графике.",
+        book_li_1: "Подбор времени без очередей в бокс",
+        book_li_2: "Предварительная оценка сроков и стоимости",
+        book_li_3: "Консультация по расходникам перед приездом",
+        form_name: "Ваше имя",
+        form_phone: "Телефон",
+        form_car: "Марка, модель и год авто",
+        ph_name: "Например, Алексей",
+        ph_phone: "+7 (700) 000-00-00",
+        ph_car: "Toyota Camry 70, 2020",
+        form_submit: "Отправить заявку",
+        form_success: "Заявка принята! Мастер свяжется с вами в ближайшее время.",
+        footer_rights: "© 2026 APEX Service. Профессиональное обслуживание и ремонт автомобилей. Все права защищены.",
+        footer_address: "г. Уральск, ул. Промышленная, 14",
+        footer_hours: "Ежедневно без выходных: 09:00 – 20:00"
+      },
+      kz: {
+        nav_about: "Сервис туралы",
+        nav_services: "Қызметтер",
+        nav_calc: "Есептеу",
+        nav_booking: "Жазылу",
+        nav_contacts: "Байланыс",
+        hero_eyebrow: "Артық сөзсіз дәл сервис",
+        hero_title: "Ашық есеппен автокөліктерге кешенді қызмет көрсету және жөндеу",
+        hero_sub: "Жеңіл көліктермен, кроссоверлермен және жол талғамайтын көліктермен жұмыс істейміз. Компьютерлік диагностика, жоспарлы ТҚК, жүріс бөлігін, тежегіш жүйесін және автоэлектриканы жөндейміз.",
+        hero_extra: "Жөндеу соңында жасырын үстеме баға жоқ: шебер әр кезеңді алдын ала келіседі, тозған бөлшектерді көрсетеді және 12 айға дейін жазбаша кепілдік береді.",
+        hero_cta: "Сервиске жазылу",
+        hero_more: "Қызметтер мен бағалар",
+        about_title: "Клиенттер неге APEX Service таңдайды",
+        about_sub: "Біз түсінікті жұмыс үдерісін жолға қойдық: көтергіш пен сканерде алғашқы тексеруден бастап соңғы тест-драйв пен тапсырыс-нарядқа дейін. Ненің ақысын төлейтініңізді және жұмыстың қанша уақыт алатынын нақты білесіз.",
+        adv_1_title: "Жөндеуге дейінгі диагностика",
+        adv_1_desc: "Алдымен ақаудың нақты себебін табамыз, бөлшектерді болжаммен ауыстырмаймыз. Жұмыс тізімі мен соманы телефон арқылы немесе жөндеу аймағында келісеміз.",
+        adv_2_title: "Тексерілген қосалқы бөлшектер",
+        adv_2_desc: "Жүріс мәнеріңіз бен бюджетіңізге сай түпнұсқа бөлшектер мен сенімді баламаларды іріктейміз.",
+        adv_3_title: "12 айға дейін кепілдік",
+        adv_3_desc: "Орындалған жұмыстар мен орнатылған тораптарға құжат ресімдейміз, қалада да, трассада да сенімді жүруіңіз үшін.",
+        services_title: "Негізгі қызметтер және прайс",
+        services_sub: "Танымал жұмыстардың өзекті базалық бағалары. Қорытынды құн көлік маркасына, қозғалтқыш көлеміне және тораптардың күйіне байланысты.",
+        srv_1_title: "Жоспарлы ТҚК және май ауыстыру",
+        srv_1_desc: "Мотор майын, май, ауа және салон сүзгілерін ауыстыру, тежегіштерді, белдіктерді, сұйықтық деңгейін тексеру және сервистік интервалды нөлдеу.",
+        srv_1_price: "22 000 ₸ бастап",
+        srv_2_title: "Компьютерлік диагностика",
+        srv_2_desc: "Электронды блоктарды толық сканерлеу, қате кодтарын оқу және түсіндіру, қозғалтқыш, АКПП, ABS және датчиктердің жұмысын нақты уақытта тексеру.",
+        srv_2_price: "18 000 ₸ бастап",
+        srv_3_title: "Жүріс бөлігін және тежегіштерді жөндеу",
+        srv_3_desc: "Көтергіште аспаны ақаулау, амортизаторларды, иінтіректерді, шар тіректерін, сайлентблоктарды, күпшек мойынтіректерін, тежегіш қалыптары мен дискілерін ауыстыру.",
+        srv_3_price: "35 000 ₸ бастап",
+        calc_title: "Алдын ала құн калькуляторы",
+        calc_sub: "Көлік түрін таңдап, қажетті қызметтерді белгілеңіз — жөндеудің шамамен бюджетін бірден көресіз.",
+        calc_car_type: "Автокөлік түрі",
+        car_sedan: "Седан / Хэтчбек",
+        car_suv: "Кроссовер / Жол талғамайтын көлік (+25%)",
+        chk_oil: "Жоспарлы ТҚК және май ауыстыру (22 000 ₸)",
+        chk_diag: "Компьютерлік диагностика (18 000 ₸)",
+        chk_chassis: "Жүріс бөлігін және тежегіштерді жөндеу (35 000 ₸)",
+        calc_total_label: "Жұмыстардың шамамен құны:",
+        calc_note: "Қосалқы бөлшектер мен шығын материалдарын есептемегендегі шамамен есеп.",
+        calc_book_btn: "Осы есеппен жазылу",
+        book_title: "Сервиске онлайн жазылу",
+        book_sub: "Қысқа нысанды толтырыңыз — қабылдаушы 15 минут ішінде хабарласып, ақау белгілерін немесе жұмыс тізімін нақтылайды және ыңғайлы уақыт бекітеді.",
+        book_li_1: "Кезексіз боксқа уақыт таңдау",
+        book_li_2: "Мерзімі мен құнын алдын ала бағалау",
+        book_li_3: "Келгенге дейін шығын материалдары бойынша кеңес",
+        form_name: "Атыңыз",
+        form_phone: "Телефон",
+        form_car: "Көлік маркасы, моделі және жылы",
+        ph_name: "Мысалы, Арман",
+        ph_phone: "+7 (700) 000-00-00",
+        ph_car: "Toyota Camry 70, 2020",
+        form_submit: "Өтінім жіберу",
+        form_success: "Өтінім қабылданды! Шебер жақын арада сізбен хабарласады.",
+        footer_rights: "© 2026 APEX Service. Автокөліктерге кәсіби қызмет көрсету және жөндеу. Барлық құқықтар қорғалған.",
+        footer_address: "Орал қ., Промышленная к-сі, 14",
+        footer_hours: "Күн сайын демалыссыз: 09:00 – 20:00"
+      },
+      en: {
+        nav_about: "About",
+        nav_services: "Services",
+        nav_calc: "Estimate",
+        nav_booking: "Booking",
+        nav_contacts: "Contacts",
+        hero_eyebrow: "Precision service with no fluff",
+        hero_title: "Comprehensive car maintenance and repair with transparent pricing",
+        hero_sub: "We service sedans, crossovers, and SUVs. Performing computer diagnostics, scheduled maintenance, suspension overhauls, brake work, and auto electrical repairs.",
+        hero_extra: "No surprise markups at pickup: our technician agrees on every step in advance, shows worn parts, and provides a written warranty of up to 12 months.",
+        hero_cta: "Book a service",
+        hero_more: "View services & prices",
+        about_title: "Why drivers choose APEX Service",
+        about_sub: "We built a clear workflow from lift and scanner inspection to final road test and itemized work order. You know exactly what you pay for and how long it takes.",
+        adv_1_title: "Diagnostics before repair",
+        adv_1_desc: "We pinpoint the real cause first instead of guessing parts. We confirm the scope and price by phone or right in the bay.",
+        adv_2_title: "Tested parts & fluids",
+        adv_2_desc: "We source OEM parts and proven equivalents matched to your driving style, mileage, and budget.",
+        adv_3_title: "Up to 12-month warranty",
+        adv_3_desc: "We document all completed work and replaced components so you can drive with confidence in the city and on the highway.",
+        services_title: "Core Services & Pricing",
+        services_sub: "Current starting prices for core work. Final cost depends on vehicle make, engine displacement, and component condition.",
+        srv_1_title: "Scheduled Maintenance & Oil Change",
+        srv_1_desc: "Engine oil, oil, air, and cabin filter replacement, brake and belt inspection, fluid level checks, and service interval reset.",
+        srv_1_price: "from 22 000 ₸",
+        srv_2_title: "Computer Diagnostics",
+        srv_2_desc: "Full electronic module scan, fault code reading and interpretation, live data inspection for engine, gearbox, ABS, and sensors.",
+        srv_2_price: "from 18 000 ₸",
+        srv_3_title: "Suspension & Brake Repair",
+        srv_3_desc: "Lift suspension inspection, replacing struts, control arms, ball joints, bushings, wheel bearings, brake pads, and rotors.",
+        srv_3_price: "from 35 000 ₸",
+        calc_title: "Preliminary Cost Estimator",
+        calc_sub: "Choose your vehicle class and check the services you need to get a quick ballpark estimate.",
+        calc_car_type: "Vehicle Type",
+        car_sedan: "Sedan / Hatchback",
+        car_suv: "Crossover / SUV (+25%)",
+        chk_oil: "Scheduled maintenance & oil change (22 000 ₸)",
+        chk_diag: "Computer diagnostics (18 000 ₸)",
+        chk_chassis: "Suspension & brake repair (35 000 ₸)",
+        calc_total_label: "Estimated labor total:",
+        calc_note: "Rough labor estimate excluding parts and consumables.",
+        calc_book_btn: "Book with this estimate",
+        book_title: "Online Service Booking",
+        book_sub: "Fill out the short form — a service advisor will call you back within 15 minutes to clarify symptoms or work items and lock in a convenient time slot.",
+        book_li_1: "Priority bay scheduling without waiting",
+        book_li_2: "Upfront estimate of turnaround time and cost",
+        book_li_3: "Parts and fluids advice before arrival",
+        form_name: "Your Name",
+        form_phone: "Phone Number",
+        form_car: "Car Make, Model & Year",
+        ph_name: "e.g. Alex",
+        ph_phone: "+7 (700) 000-00-00",
+        ph_car: "Toyota Camry 70, 2020",
+        form_submit: "Send Request",
+        form_success: "Request received! Our advisor will contact you shortly.",
+        footer_rights: "© 2026 APEX Service. Professional car maintenance and repair. All rights reserved.",
+        footer_address: "14 Promyshlennaya St, Uralsk",
+        footer_hours: "Daily, no days off: 09:00 – 20:00"
+      }
+    };
+
+    let currentLang = "ru";
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (translations[lang][key]) {
+          el.placeholder = translations[lang][key];
+        }
+      });
+
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.lang === lang);
+      });
+    }
+
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+    });
+
+    const carTypeSelect = document.getElementById("carType");
+    const serviceCheckboxes = document.querySelectorAll(".srv-check");
+    const totalPriceEl = document.getElementById("totalPrice");
+
+    function calculateTotal() {
+      const multiplier = parseFloat(carTypeSelect.value);
+      let baseSum = 0;
+
+      serviceCheckboxes.forEach((chk) => {
+        if (chk.checked) {
+          baseSum += parseInt(chk.value, 10);
+        }
+      });
+
+      const finalSum = Math.round(baseSum * multiplier);
+      totalPriceEl.textContent = `${finalSum.toLocaleString("ru-RU")} ₸`;
+    }
+
+    carTypeSelect.addEventListener("change", calculateTotal);
+    serviceCheckboxes.forEach((chk) => chk.addEventListener("change", calculateTotal));
+
+    const bookingForm = document.getElementById("bookingForm");
+    const formMessage = document.getElementById("formMessage");
+
+    bookingForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      formMessage.textContent = translations[currentLang].form_success;
+      bookingForm.reset();
+    });
+  </script>
+</body>
+</html>
